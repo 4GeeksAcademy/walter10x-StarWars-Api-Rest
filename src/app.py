@@ -32,6 +32,9 @@ def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
 #INICIO DE CODIGO
+# -----------------------------------------------------
+# API Endpoints
+# -----------------------------------------------------
 
 # generate sitemap with all your endpoints
 @app.route('/')
@@ -44,13 +47,12 @@ def handle_hello():
     results = list(map(lambda user: user.serialize(), all_user))
     return jsonify(results), 200
 
- #Enpoind para buscar people pero por (ID)  
+   
 @app.route('/user/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     user = User.query.filter_by(id=user_id).first()
     return jsonify(user.serialize()), 200
 
-#Enpoind para buscar people 
 
 @app.route('/people', methods=['GET'])
 def get_peoples():
@@ -59,29 +61,23 @@ def get_peoples():
     return jsonify(results), 200
 
    
-
-
-    #Enpoind para buscar people pero por (ID)  
 @app.route('/people/<int:people_id>', methods=['GET'])
 def get_people(people_id):
     people = People.query.filter_by(id=people_id).first()
     return jsonify(people.serialize()), 200
+    
 
-    #Enpoind para buscar planets 
 @app.route('/planets', methods=['GET'])
 def get_planet():
     all_planets=Planet.query.all()
     results = list(map(lambda planet: planet.serialize(), all_planets))
     return jsonify(results), 200
 
-#Enpoind para buscar people pero por (ID)  
+
 @app.route('/planets/<int:planet_id>', methods=['GET'])
 def planet(planet_id):
     planet = Planet.query.filter_by(id=planet_id).first()
     return jsonify(planet.serialize()), 200
-
-
-#CREAR ENDPOINT PARA CREAR PLANETAS  [POST]
 
    
 @app.route('/planet', methods=['POST'])
@@ -101,7 +97,7 @@ def create_planet():
     }
     return jsonify(response_body), 201
 
-    #CREAR ENDPOINT PARA CREAR PLANETAS  [POST]
+    
 
 @app.route('/people', methods=['POST'])
 def create_people():
@@ -121,7 +117,7 @@ def create_people():
     return jsonify(response_body), 201
    
     
-    # CREAR ENDPOINT PARA ELIMINAR UN PLANETA
+
 
 @app.route('/planet/<int:planet_id>', methods=['DELETE'])
 def delete_planet(planet_id):
