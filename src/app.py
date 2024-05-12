@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
+from models import db, User, People
 #from models import Person
 
 app = Flask(__name__)
@@ -31,6 +31,8 @@ setup_admin(app)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
+#INICIO DE CODIGO
+
 # generate sitemap with all your endpoints
 @app.route('/')
 def sitemap():
@@ -39,11 +41,40 @@ def sitemap():
 @app.route('/user', methods=['GET'])
 def handle_hello():
 
-    response_body = {
-        "msg": "Hello, this is your GET /user response "
-    }
+    all_user=User.query.all()
+   
+    results = list(map(lambda user: user.serialize(), all_user))
+    print(results)
+    return jsonify(results), 200
 
-    return jsonify(response_body), 200
+
+#Enpoind para buscar people 
+
+@app.route('/people', methods=['GET'])
+def get_peoples():
+
+    all_peoples=People.query.all()
+   
+    results = list(map(lambda people: people.serialize(), all_peoples))
+    print(results)
+    return jsonify(results), 200
+
+    #Enpoind para buscar people pero por (ID)  
+@app.route('/people/<int:people_id>', methods=['GET'])
+def get_people(people_id):
+    print(people_id)
+    people = People.query.filter_by(id=people_id).first()
+    #print(results)
+    return jsonify(people.serialize()), 200
+    
+    
+
+
+
+
+
+
+#FIN CODIGO 
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
