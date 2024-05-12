@@ -121,7 +121,23 @@ def create_people():
     return jsonify(response_body), 201
    
     
-    
+    # CREAR ENDPOINT PARA ELIMINAR UN PLANETA
+
+@app.route('/planet/<int:planet_id>', methods=['DELETE'])
+def delete_planet(planet_id):
+     planet = Planet.query.get(planet_id)
+     if not planet:
+      return jsonify({'message': 'El planeta no existe'}), 404
+     
+     try:
+        db.session.delete(planet)
+        db.session.commit()
+        return jsonify({'message': 'The planet was successfully eliminated.'}), 200
+     except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error while deleting the planet', 'error': str(e)}), 500
+     
+
 
 
 
