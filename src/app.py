@@ -40,24 +40,26 @@ def sitemap():
 
 @app.route('/user', methods=['GET'])
 def handle_hello():
-
     all_user=User.query.all()
-   
     results = list(map(lambda user: user.serialize(), all_user))
-    print(results)
     return jsonify(results), 200
 
+ #Enpoind para buscar people pero por (ID)  
+@app.route('/user/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    return jsonify(user.serialize()), 200
 
 #Enpoind para buscar people 
 
 @app.route('/people', methods=['GET'])
 def get_peoples():
-
     all_peoples=People.query.all()
-   
     results = list(map(lambda people: people.serialize(), all_peoples))
-    print(results)
     return jsonify(results), 200
+
+   
+    
 
     #Enpoind para buscar people pero por (ID)  
 @app.route('/people/<int:people_id>', methods=['GET'])
