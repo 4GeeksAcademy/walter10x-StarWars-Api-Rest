@@ -81,7 +81,7 @@ def planet(planet_id):
     return jsonify(planet.serialize()), 200
 
 
-#CREAR ENDPOINT PARA CREAR PLANERTAS  [POST]
+#CREAR ENDPOINT PARA CREAR PLANETAS  [POST]
 
    
 @app.route('/planet', methods=['POST'])
@@ -98,6 +98,25 @@ def create_planet():
     db.session.commit()
     response_body = {
         "msg": "Planet created successfully"
+    }
+    return jsonify(response_body), 201
+
+    #CREAR ENDPOINT PARA CREAR PLANETAS  [POST]
+
+@app.route('/people', methods=['POST'])
+def create_people():
+    data = request.json
+    if not 'name' in data:
+        return jsonify('error :missing fields'), 400
+    
+    if data['name'] == "":
+     return jsonify({'error': 'Name cannot be empty', 'hint': 'Please enter a valid name'}), 400
+
+    people = People(name = data['name'], description = data['description'])
+    db.session.add(people)
+    db.session.commit()
+    response_body = {
+        "msg": "People created successfully"
     }
     return jsonify(response_body), 201
    
