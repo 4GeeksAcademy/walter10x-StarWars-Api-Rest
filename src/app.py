@@ -72,6 +72,12 @@ def get_planet():
     results = list(map(lambda planet: planet.serialize(), all_planets))
     return jsonify(results), 200
 
+#Enpoind para buscar people pero por (ID)  
+@app.route('/planets/<int:planet_id>', methods=['GET'])
+def planet(planet_id):
+    planet = Planet.query.filter_by(id=planet_id).first()
+    return jsonify(planet.serialize()), 200
+
    
     
     
