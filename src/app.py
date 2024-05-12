@@ -59,7 +59,7 @@ def get_peoples():
     return jsonify(results), 200
 
    
-    
+
 
     #Enpoind para buscar people pero por (ID)  
 @app.route('/people/<int:people_id>', methods=['GET'])
@@ -80,8 +80,27 @@ def planet(planet_id):
     planet = Planet.query.filter_by(id=planet_id).first()
     return jsonify(planet.serialize()), 200
 
+
+#CREAR ENDPOINT PARA CREAR PLANERTAS  [POST]
+
    
+@app.route('/planet', methods=['POST'])
+def create_planet():
+    data = request.json
+    if not 'name' in data:
+        return jsonify('error :missing fields'), 400
     
+    if data['name'] == "":
+     return jsonify({'error': 'Name cannot be empty', 'hint': 'Please enter a valid name'}), 400
+
+    planet = Planet(name = data['name'], description = data['description'])
+    db.session.add(planet)
+    db.session.commit()
+    response_body = {
+        "msg": "Planet created successfully"
+    }
+    return jsonify(response_body), 201
+   
     
     
 
