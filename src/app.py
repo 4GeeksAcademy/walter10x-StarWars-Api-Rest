@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, People
+from models import db, User, People, Planet
 #from models import Person
 
 app = Flask(__name__)
@@ -62,10 +62,18 @@ def get_peoples():
     #Enpoind para buscar people pero por (ID)  
 @app.route('/people/<int:people_id>', methods=['GET'])
 def get_people(people_id):
-    print(people_id)
     people = People.query.filter_by(id=people_id).first()
-    #print(results)
     return jsonify(people.serialize()), 200
+
+    #Enpoind para buscar planets 
+@app.route('/planets', methods=['GET'])
+def get_planet():
+    all_planets=Planet.query.all()
+    results = list(map(lambda planet: planet.serialize(), all_planets))
+    return jsonify(results), 200
+
+   
+    
     
     
 
